@@ -9,30 +9,35 @@ class QuizView extends StatefulWidget {
   State<QuizView> createState() => _QuizViewState();
 }
 
+Answer answers = Answer();
 List<Question> q = [
   Question(
-      question_id: 1,
-      type: 1,
-      cat: 1,
-      Questions: "what is Player's Real name",
-      options: {"PlayerOne", "Navin", "Parzival", "magneto"},
-      answer: {"Navin"}),
+    question_id: 1,
+    type: 1,
+    cat: 1,
+    Questions: "what is Player's Real name",
+    options: {"PlayerOne", "Navin", "Parzival", "magneto"},
+    answer: {"Navin"},
+    ans: -1,
+  ),
   Question(
-      question_id: 1,
+      question_id: 2,
       type: 1,
       cat: 1,
       Questions: "what is Thanos name",
       options: {"PlayerOne", "Navin", "Parzival", "Tanush"},
-      answer: {"Tanush"}),
+      answer: {"Tanush"},
+      ans: -1),
   Question(
-      question_id: 1,
+      question_id: 3,
       type: 1,
       cat: 1,
       Questions: "who knows java very well",
       options: {"PlayerOne", "Navin", "mani", "Tanush"},
-      answer: {"mani"}),
+      answer: {"mani"},
+      ans: -1),
   Question(
-      question_id: 1,
+      question_id: 4,
       type: 1,
       cat: 1,
       Questions:
@@ -46,9 +51,8 @@ List<Question> q = [
         "BatMan",
         "Elon Musk"
       },
-      answer: {
-        "Mani"
-      })
+      answer: {"Mani"},
+      ans: -1)
 ];
 
 class _QuizViewState extends State<QuizView> {
@@ -66,7 +70,8 @@ class _QuizViewState extends State<QuizView> {
             //scrollDirection: Axis.vertical,
             itemCount: q.length,
             itemBuilder: (context, index) {
-              return Quiz(quest: q.elementAt(index), index: index);
+              return Quiz(
+                  quest: q.elementAt(index), index: index, answers: answers);
             },
           ),
         ));
