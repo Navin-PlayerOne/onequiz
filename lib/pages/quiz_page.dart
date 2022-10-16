@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:onequiz/models/questions_model.dart';
 import 'package:onequiz/widgets/quiz.dart';
@@ -18,7 +20,7 @@ List<Question> q = [
     Questions: "what is Player's Real name",
     options: {"PlayerOne", "Navin", "Parzival", "magneto"},
     answer: {"Navin"},
-    ans: -1,
+    ans: {},
   ),
   Question(
       question_id: 2,
@@ -27,15 +29,15 @@ List<Question> q = [
       Questions: "what is Thanos name",
       options: {"PlayerOne", "Navin", "Parzival", "Tanush"},
       answer: {"Tanush"},
-      ans: -1),
+      ans: {}),
   Question(
       question_id: 3,
-      type: 1,
+      type: 2,
       cat: 1,
       Questions: "who knows java very well",
       options: {"PlayerOne", "Navin", "mani", "Tanush"},
-      answer: {"mani"},
-      ans: -1),
+      answer: {"mani", "PlayerOne"},
+      ans: {}),
   Question(
       question_id: 4,
       type: 1,
@@ -51,8 +53,10 @@ List<Question> q = [
         "BatMan",
         "Elon Musk"
       },
-      answer: {"Mani"},
-      ans: -1)
+      answer: {
+        "Mani"
+      },
+      ans: {})
 ];
 
 class _QuizViewState extends State<QuizView> {

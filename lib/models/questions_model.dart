@@ -7,7 +7,7 @@ class Question {
   final String Questions;
   final Set<String> options;
   final Set<String> answer;
-  late int ans;
+  late Set<int> ans; //selected options 
   //late List<int>selectedoptions;
   Question(
       {required this.question_id,
