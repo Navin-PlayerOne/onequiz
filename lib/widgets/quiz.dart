@@ -30,7 +30,10 @@ class _QuizState extends State<Quiz> {
         Text(widget.quest.Questions,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
         const SizedBox(height: 10.0),
-        Options(quest: widget.quest, answers: answers),
+        Options(quest: widget.quest, answers: widget.answers),
+        const SizedBox(
+          height: 50,
+        )
       ],
     );
   }
@@ -60,22 +63,25 @@ class _OptionsState extends State<Options> {
           onTap: () {
             setState(() {
               if (widget.quest.type == 1) {
-                widget.answers.mp.addEntries({
-                  widget.quest.question_id: singleSelect(widget.quest, index)
+                Answer.mp.addEntries({
+                  widget.quest.question_id:
+                      singleSelect(widget.quest, index, widget.answers)
                 }.entries);
               } else {
-                widget.answers.mp.addEntries({
-                  widget.quest.question_id: multiSelect(widget.quest, index)
+                Answer.mp.addEntries({
+                  widget.quest.question_id:
+                      multiSelect(widget.quest, index, widget.answers)
                 }.entries);
               }
-              print(widget.answers.mp);
+              print(Answer.mp);
+              print(widget.answers.ans);
             });
           },
           child: Container(
             decoration: BoxDecoration(
-              color: widget.quest.ans.contains(index)
-                  ? Colors.green
-                  : Colors.black12,
+              color: widget.answers.ans.contains(index)
+                  ? Colors.blue[300]
+                  : Theme.of(context).colorScheme.surfaceVariant,
               borderRadius: const BorderRadius.all(Radius.circular(15)),
             ),
             padding: const EdgeInsets.all(5.0),
@@ -83,7 +89,7 @@ class _OptionsState extends State<Options> {
             child: ListTile(
               title: Text(widget.quest.options.elementAt(index)),
               leading: Text("${index + 1}"),
-              trailing: !widget.quest.ans.contains(index)
+              trailing: !widget.answers.ans.contains(index)
                   ? null
                   : const Icon(Icons.auto_awesome),
             ),
@@ -93,34 +99,34 @@ class _OptionsState extends State<Options> {
     );
   }
 
-  bool singleSelect(Question q, int index) {
+  bool singleSelect(Question q, int index, Answer a) {
     print("Single Selct");
-    if (q.ans.contains(index)) {
-      q.ans.clear();
+    if (a.ans.contains(index)) {
+      a.ans.clear();
     } else {
-      q.ans.add(index);
+      a.ans.add(index);
     }
-    if (q.ans.isNotEmpty) {
-      q.ans.clear();
-      q.ans.add(index);
+    if (a.ans.isNotEmpty) {
+      a.ans.clear();
+      a.ans.add(index);
     }
-    if (q.ans.isNotEmpty &&
-        q.answer.contains(q.options.elementAt(q.ans.first))) {
+    if (a.ans.isNotEmpty &&
+        q.answer.contains(q.options.elementAt(a.ans.first))) {
       return true;
     } else {
       return false;
     }
   }
 
-  bool multiSelect(Question q, int index) {
+  bool multiSelect(Question q, int index, Answer a) {
     print("Multi Selct");
-    if (q.ans.contains(index)) {
-      q.ans.remove(index);
+    if (a.ans.contains(index)) {
+      a.ans.remove(index);
     } else {
-      q.ans.add(index);
+      a.ans.add(index);
     }
     List<String> tmp = [];
-    for (var element in q.ans) {
+    for (var element in a.ans) {
       tmp.add(q.options.elementAt(element));
     }
     if (tmp.length == q.answer.length && q.answer.containsAll(tmp)) {
