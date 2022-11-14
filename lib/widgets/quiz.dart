@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:onequiz/pages/quiz_page.dart';
 import '../models/questions_model.dart';
 
 class Quiz extends StatefulWidget {

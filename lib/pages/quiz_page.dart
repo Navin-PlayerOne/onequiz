@@ -12,54 +12,17 @@ class QuizView extends StatefulWidget {
 int index = 0;
 
 PageController _controller = PageController();
-List<Answer> answers = [Answer(), Answer(), Answer(), Answer()];
-List<Question> q = [
-  Question(
-    question_id: 1,
-    type: 1,
-    cat: 1,
-    Questions: "what is Player's Real name",
-    options: {"PlayerOne", "Navin", "Parzival", "magneto"},
-    answer: {"Navin"},
-  ),
-  Question(
-    question_id: 2,
-    type: 1,
-    cat: 1,
-    Questions: "what is Thanos name",
-    options: {"PlayerOne", "Navin", "Parzival", "Tanush"},
-    answer: {"Tanush"},
-  ),
-  Question(
-    question_id: 3,
-    type: 2,
-    cat: 1,
-    Questions: "who knows java very well",
-    options: {"PlayerOne", "Navin", "mani", "Tanush"},
-    answer: {"mani", "PlayerOne"},
-  ),
-  Question(
-    question_id: 4,
-    type: 1,
-    cat: 1,
-    Questions:
-        "9, SwapBuffersCompleted=8809430884971, DisplayPresentTime=0,Reloaded 1 of 598 libraries in 449ms (compile: 21 ms, reload: 273 ms, reassemble: 107 ms).",
-    options: {
-      "Mani",
-      "Navin",
-      "Parzival",
-      "Tanush",
-      "Tony Stark",
-      "BatMan",
-      "Elon Musk"
-    },
-    answer: {"Mani"},
-  )
-];
+List<Answer> answers = [];
+List<Question> questions = [];
+Map<String, dynamic> hashes = {};
+String scoreBoardId="";
 
 class _QuizViewState extends State<QuizView> {
   @override
   Widget build(BuildContext context) {
+    hashes = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    setValues(hashes['questions']!);
+    scoreBoardId = hashes['sid']!;
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
@@ -71,7 +34,7 @@ class _QuizViewState extends State<QuizView> {
               child: MaterialButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/result',
-                      arguments: {'result': answers,'question' : q});
+                      arguments: {'result': answers, 'question': questions,'sid' :scoreBoardId});
                 },
                 color: Colors.red[400],
                 child: const Text("End Test"),
@@ -84,11 +47,11 @@ class _QuizViewState extends State<QuizView> {
           child: PageView.builder(
             //scrollDirection: Axis.vertical,
             controller: _controller,
-            itemCount: q.length,
+            itemCount: questions.length,
             itemBuilder: (context, index) {
               index = index;
               return Quiz(
-                  quest: q.elementAt(index),
+                  quest: questions.elementAt(index),
                   index: index,
                   answers: answers.elementAt(index));
             },
@@ -120,6 +83,15 @@ class _QuizViewState extends State<QuizView> {
             ],
           ),
         ));
+  }
+
+  void setValues(List<Question> questin) {
+    setState(() {
+      questions = questin;
+      for (int i = 0; i < questin.length; i++) {
+        answers.add(Answer());
+      }
+    });
   }
 }
 

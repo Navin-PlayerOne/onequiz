@@ -1,9 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:onequiz/pages/home_page.dart';
 import 'package:onequiz/pages/quiz_page.dart';
 import 'package:onequiz/pages/result.dart';
-void main() {
+import 'package:onequiz/services.dart/authstate.dart';
+
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -39,8 +48,9 @@ class _MyAppState extends State<MyApp> {
           ),
           routes: {
             '/home': (context) => const HomePage(),
-            '/': (context) => const QuizView(),
-            '/result': (context) => const Result()
+            '/': (context) => AuthService().handleAuthState(),
+            '/result': (context) => const Result(),
+            '/quiz': (context) => const QuizView(),
           },
         );
       },

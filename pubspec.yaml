@@ -38,6 +38,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   pie_chart:
   dynamic_color:
+  firebase_core: ^2.1.1
+  firebase_auth:
+  google_sign_in:
+  cloud_firestore:
+  cool_alert:
 
 dev_dependencies:
   flutter_test:
