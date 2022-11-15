@@ -43,6 +43,8 @@ dependencies:
   google_sign_in:
   cloud_firestore:
   cool_alert:
+  flutter_animated_button:
+  provider:
 
 dev_dependencies:
   flutter_test:

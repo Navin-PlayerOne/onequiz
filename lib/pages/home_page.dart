@@ -63,7 +63,8 @@ Widget LinkBox(_link, context) {
                     .checkAttendedStatus(test.scoreBoardCollectionId)) {
                   Navigator.pushReplacementNamed(context, '/quiz', arguments: {
                     'questions': result,
-                    'sid': test.scoreBoardCollectionId
+                    'sid': test.scoreBoardCollectionId,
+                    'testId' : test.testid
                   });
                 } else {
                   CoolAlert.show(

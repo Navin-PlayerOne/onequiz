@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:onequiz/models/questions_model.dart';
+import 'package:onequiz/services.dart/database.dart';
 import 'package:onequiz/widgets/quiz.dart';
+import 'package:provider/provider.dart';
 
 class QuizView extends StatefulWidget {
   const QuizView({super.key});
@@ -15,7 +18,8 @@ PageController _controller = PageController();
 List<Answer> answers = [];
 List<Question> questions = [];
 Map<String, dynamic> hashes = {};
-String scoreBoardId="";
+String scoreBoardId = "";
+String testId = "";
 
 class _QuizViewState extends State<QuizView> {
   @override
@@ -23,6 +27,48 @@ class _QuizViewState extends State<QuizView> {
     hashes = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     setValues(hashes['questions']!);
     scoreBoardId = hashes['sid']!;
+    testId = hashes['testId']!;
+    return StreamProvider<bool>.value(
+      value: DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+          .getStatus(testId),
+      initialData: false,
+      child: Parser(),
+    );
+  }
+
+  void setValues(List<Question> questin) {
+    setState(() {
+      questions = questin;
+      for (int i = 0; i < questin.length; i++) {
+        answers.add(Answer());
+      }
+    });
+  }
+}
+
+class Parser extends StatelessWidget {
+  const Parser({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    bool status = Provider.of<bool>(context);
+    return status
+        ? const Scaffold(
+            body: Center(
+              child: Text("Test is Not Avilable"),
+            ),
+          )
+        : const QuestionsDirective();
+  }
+}
+
+class QuestionsDirective extends StatelessWidget {
+  const QuestionsDirective({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
@@ -34,7 +80,11 @@ class _QuizViewState extends State<QuizView> {
               child: MaterialButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/result',
-                      arguments: {'result': answers, 'question': questions,'sid' :scoreBoardId});
+                      arguments: {
+                        'result': answers,
+                        'question': questions,
+                        'sid': scoreBoardId
+                      });
                 },
                 color: Colors.red[400],
                 child: const Text("End Test"),
@@ -83,15 +133,6 @@ class _QuizViewState extends State<QuizView> {
             ],
           ),
         ));
-  }
-
-  void setValues(List<Question> questin) {
-    setState(() {
-      questions = questin;
-      for (int i = 0; i < questin.length; i++) {
-        answers.add(Answer());
-      }
-    });
   }
 }
 

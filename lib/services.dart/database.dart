@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:onequiz/widgets/quiz.dart';
-
 import '../models/questions_model.dart';
 import '../models/test.dart';
 
@@ -137,5 +135,13 @@ class DatabaseService {
     await testStatusCollection
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set({'isAttended': 1});
+  }
+
+  bool _testStatusFromSnapshot(DocumentSnapshot doc) {
+    return (doc.data() as Map)['isClosed'] ==1 ? false: true;
+  }
+
+  Stream<bool> getStatus(testId) {
+    return testCollection.doc(testId).snapshots().map(_testStatusFromSnapshot);
   }
 }
